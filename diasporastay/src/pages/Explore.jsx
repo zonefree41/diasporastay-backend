@@ -7,6 +7,7 @@ const hotels = [
         name: "Addis Skyline Hotel",
         city: "Addis Ababa",
         country: "Ethiopia",
+        flag: "🇪🇹",
         price: 120,
         image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000",
     },
@@ -15,6 +16,7 @@ const hotels = [
         name: "Accra Beach Resort",
         city: "Accra",
         country: "Ghana",
+        flag: "🇬🇭",
         price: 150,
         image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000",
     },
@@ -23,6 +25,7 @@ const hotels = [
         name: "Nairobi Garden Suites",
         city: "Nairobi",
         country: "Kenya",
+        flag: "🇰🇪",
         price: 95,
         image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1000",
     },
@@ -31,6 +34,7 @@ const hotels = [
         name: "Cape Town Heritage Lodge",
         city: "Cape Town",
         country: "South Africa",
+        flag: "🇿🇦",
         price: 180,
         image: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=1000",
     },
@@ -39,6 +43,7 @@ const hotels = [
         name: "Kigali City View Hotel",
         city: "Kigali",
         country: "Rwanda",
+        flag: "🇷🇼",
         price: 110,
         image: "https://images.unsplash.com/photo-1600047509807-ba8f99d7d8cd?q=80&w=1000",
     },
@@ -47,6 +52,7 @@ const hotels = [
         name: "Lagos Grand Suites",
         city: "Lagos",
         country: "Nigeria",
+        flag: "🇳🇬",
         price: 140,
         image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1000",
     },
@@ -57,19 +63,16 @@ export default function Explore() {
     const [country, setCountry] = useState("All")
     const [priceRange, setPriceRange] = useState("All")
 
-    // Compute filtered results
+    // Filter hotels
     const filteredHotels = hotels.filter((hotel) => {
         const matchesSearch =
             (hotel.name + hotel.city + hotel.country).toLowerCase().includes(query.toLowerCase())
-
         const matchesCountry = country === "All" || hotel.country === country
-
         const matchesPrice =
             priceRange === "All" ||
             (priceRange === "Low" && hotel.price <= 100) ||
             (priceRange === "Medium" && hotel.price > 100 && hotel.price <= 150) ||
             (priceRange === "High" && hotel.price > 150)
-
         return matchesSearch && matchesCountry && matchesPrice
     })
 
@@ -95,12 +98,11 @@ export default function Explore() {
                         onChange={(e) => setCountry(e.target.value)}
                     >
                         <option value="All">All Countries</option>
-                        <option value="Ethiopia">Ethiopia</option>
-                        <option value="Ghana">Ghana</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Nigeria">Nigeria</option>
+                        {[...new Set(hotels.map((h) => h.country))].map((c) => (
+                            <option key={c} value={c}>
+                                {c}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-md-3">
@@ -130,11 +132,15 @@ export default function Explore() {
                                     style={{ height: "200px", objectFit: "cover" }}
                                 />
                                 <div className="card-body">
-                                    <h5 className="card-title">{hotel.name}</h5>
+                                    <h5 className="card-title d-flex align-items-center justify-content-between">
+                                        {hotel.name}
+                                        <ReactCountryFlag countryCode="ET" svg style={{ fontSize: "1.5rem" }} />
+                                    </h5>
                                     <p className="text-muted mb-1">
+                                        <i className="bi bi-geo-alt text-primary me-1"></i>
                                         {hotel.city}, {hotel.country}
                                     </p>
-                                    <p className="fw-bold">${hotel.price} / night</p>
+                                    <p className="fw-bold mb-3">${hotel.price} / night</p>
                                     <Link to={`/checkout?hotel=${hotel.id}`} className="btn btn-primary w-100">
                                         Reserve
                                     </Link>
