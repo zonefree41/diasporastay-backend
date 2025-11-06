@@ -26,6 +26,7 @@
     "stripe": "^19.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "vite": "^7.2.0"
   }
 }
