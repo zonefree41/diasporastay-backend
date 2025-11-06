@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
+const API = import.meta.env.VITE_API_BASE;
+
 
 export default function MyBookings() {
     const [email, setEmail] = useState('')
