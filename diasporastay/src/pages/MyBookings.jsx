@@ -10,7 +10,7 @@ export default function MyBookings() {
         if (!email) return alert("Please enter your booking email.")
         try {
             setLoading(true)
-            const res = await axios.get(`http://localhost:5000/api/bookings?email=${email}`)
+            const res = await axios.get(`https://diasporastay-backend.onrender.com/api/bookings?email=${email}`)
             setBookings(res.data)
         } catch (err) {
             alert("Error fetching bookings: " + err.message)
