@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom'
 import { HOTELS } from '../data/hotels'
 import axios from 'axios'
 
+
+
 const API = import.meta.env.VITE_API_BASE;
 
 

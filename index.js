@@ -9,6 +9,8 @@ import bodyParser from "body-parser";
 
 dotenv.config();
 const app = express();
+app.use(cors());
+app.use(express.json());
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // ✅ connect MongoDB
@@ -29,6 +31,37 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// ✅ Stripe webhook route
+app.post(
+    "/webhook",
+    bodyParser.raw({ type: "application/json" }),
+    (request, response) => {
+        const sig = request.headers["stripe-signature"]
+        let event
+
+        try {
+            event = stripe.webhooks.constructEvent(
+                request.body,
+                sig,
+                process.env.STRIPE_WEBHOOK_SECRET
+            )
+        } catch (err) {
+            console.error("⚠️ Webhook signature verification failed:", err.message)
+            return response.status(400).send(`Webhook Error: ${err.message}`)
+        }
+
+        // ✅ Handle successful payments
+        if (event.type === "checkout.session.completed") {
+            const session = event.data.object
+            console.log("✅ Payment Success:", session.id)
+            // TODO: save booking in MongoDB here
+        }
+
+        response.sendStatus(200)
+    }
+)
+
 
 // ✅ Create Checkout Session
 app.post("/api/create-checkout-session", async (req, res) => {

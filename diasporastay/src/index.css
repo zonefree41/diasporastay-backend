@@ -101,3 +101,25 @@ input.form-control:focus {
 .btn-primary:hover {
   background-color: #005cc5;
 }
+
+.hotel-banner h1 {
+  font-size: 3rem;
+}
+
+.hotel-page .card {
+  border-radius: 12px;
+}
+
+.hotel-page .card-body {
+  padding: 2rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .hotel-banner {
+    height: 40vh;
+  }
+
+  .hotel-banner h1 {
+    font-size: 2rem;
+  }
+}

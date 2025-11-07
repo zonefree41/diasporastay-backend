@@ -1,9 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
+  server: {
+    fs: {
+      // Allow serving one level up to fix Bootstrap Icons access
+      allow: [resolve(__dirname, '.'), resolve(__dirname, '..')],
+    },
   },
 })
+

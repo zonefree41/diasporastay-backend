@@ -1,5 +1,8 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { HOTELS } from '../data/hotels'
+import ReactCountryFlag from "react-country-flag"
+
 
 const hotels = [
     {
@@ -134,16 +137,20 @@ export default function Explore() {
                                 <div className="card-body">
                                     <h5 className="card-title d-flex align-items-center justify-content-between">
                                         {hotel.name}
-                                        <ReactCountryFlag countryCode="ET" svg style={{ fontSize: "1.5rem" }} />
+                                        <ReactCountryFlag countryCode={hotel.countryCode} svg style={{ fontSize: "1.5rem" }} />
                                     </h5>
                                     <p className="text-muted mb-1">
                                         <i className="bi bi-geo-alt text-primary me-1"></i>
                                         {hotel.city}, {hotel.country}
                                     </p>
                                     <p className="fw-bold mb-3">${hotel.price} / night</p>
+                                    <Link to={`/hotel/${hotel.id}`} className="btn btn-outline-primary w-100 mb-2">
+                                        View Details
+                                    </Link>
                                     <Link to={`/checkout?hotel=${hotel.id}`} className="btn btn-primary w-100">
                                         Reserve
                                     </Link>
+
                                 </div>
                             </div>
                         </div>

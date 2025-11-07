@@ -1,38 +1,70 @@
+// Centralized hotel dataset for DiasporaStay
+
 export const HOTELS = [
     {
-        id: 'dse-001',
-        name: 'Addis Skyline Hotel',
-        city: 'Addis Ababa',
-        country: 'Ethiopia',
-        price: 88,
-        rating: 4.6,
-        image:
-            'https://images.unsplash.com/photo-1559599101-f09722fb4948?q=80&w=1400',
-        tags: ['free breakfast', 'airport shuttle'],
-        description: 'Modern comfort in the heart of Addis, perfect for diaspora travelers.',
-    },
-    {
-        id: 'dse-002',
-        name: 'Cape Heritage Suites',
-        city: 'Cape Town',
-        country: 'South Africa',
+        id: 1,
+        name: "Addis Skyline Hotel",
+        city: "Addis Ababa",
+        country: "Ethiopia",
+        flag: "🇪🇹",
         price: 120,
-        rating: 4.8,
-        image:
-            'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1400',
-        tags: ['ocean view', 'wifi', 'family rooms'],
-        description: 'Boutique suites with panoramic ocean vistas and walkable neighborhoods.',
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000",
+        description:
+            "Experience luxury in the heart of Addis Ababa. Rooftop lounge, modern suites, and authentic Ethiopian hospitality.",
     },
     {
-        id: 'dse-003',
-        name: 'Accra Palm Resort',
-        city: 'Accra',
-        country: 'Ghana',
+        id: 2,
+        name: "Accra Beach Resort",
+        city: "Accra",
+        country: "Ghana",
+        flag: "🇬🇭",
+        price: 150,
+        image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000",
+        description:
+            "A beachfront paradise offering sea-view rooms, traditional Ghanaian cuisine, and warm coastal breezes.",
+    },
+    {
+        id: 3,
+        name: "Nairobi Garden Suites",
+        city: "Nairobi",
+        country: "Kenya",
+        flag: "🇰🇪",
         price: 95,
-        rating: 4.5,
-        image:
-            'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d90?q=80&w=1400',
-        tags: ['pool', 'breakfast', 'airport pickup'],
-        description: 'Resort vibes with easy access to beaches and nightlife.',
+        image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1000",
+        description:
+            "Charming suites surrounded by lush gardens, located near Nairobi National Park. Perfect for nature lovers.",
+    },
+    {
+        id: 4,
+        name: "Cape Town Heritage Lodge",
+        city: "Cape Town",
+        country: "South Africa",
+        flag: "🇿🇦",
+        price: 180,
+        image: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=1000",
+        description:
+            "Nestled at the foot of Table Mountain, this heritage lodge offers elegant rooms with a touch of history.",
+    },
+    {
+        id: 5,
+        name: "Kigali City View Hotel",
+        city: "Kigali",
+        country: "Rwanda",
+        flag: "🇷🇼",
+        price: 110,
+        image: "https://images.unsplash.com/photo-1600047509807-ba8f99d7d8cd?q=80&w=1000",
+        description:
+            "Modern hotel with panoramic city views, rooftop dining, and easy access to cultural landmarks.",
+    },
+    {
+        id: 6,
+        name: "Lagos Grand Suites",
+        city: "Lagos",
+        country: "Nigeria",
+        flag: "🇳🇬",
+        price: 140,
+        image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1000",
+        description:
+            "Stylish and comfortable suites in the vibrant city of Lagos. Enjoy nightlife, business convenience, and comfort.",
     },
 ]

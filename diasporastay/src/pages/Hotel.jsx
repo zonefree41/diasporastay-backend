@@ -1,39 +1,108 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { HOTELS } from '../data/hotels'
-
+import { useParams, Link } from "react-router-dom"
+import { HOTELS } from "../data/hotels"
+import axios from "axios"
 
 export default function Hotel() {
     const { id } = useParams()
-    const navigate = useNavigate()
-    const hotel = HOTELS.find(h => h.id === id)
-
+    const hotel = HOTELS.find((h) => h.id === parseInt(id))
 
     if (!hotel) {
         return (
-            <div className="container py-5">
-                <div className="alert alert-warning">Hotel not found.</div>
-                <button className="btn btn-primary" onClick={() => navigate(-1)}>Go back</button>
+            <div className="container text-center py-5">
+                <h2 className="text-danger">Hotel not found</h2>
+                <Link to="/explore" className="btn btn-outline-primary mt-3">
+                    Back to Explore
+                </Link>
             </div>
         )
     }
 
+    // ⚙️ Handle Stripe Checkout
+    const handleCheckout = async () => {
+        try {
+            const res = await axios.post("http://localhost:5000/api/create-checkout-session", {
+                hotel,
+                nights: 2,
+                guests: 2,
+            })
+            window.location.href = res.data.url
+        } catch (err) {
+            alert("Payment failed: " + err.message)
+        }
+    }
 
     return (
-        <div className="container py-4">
-            <div className="row g-4">
-                <div className="col-md-7">
-                    <img className="w-100 rounded-3 shadow-sm" src={hotel.image} alt={hotel.name} />
+        <div className="hotel-page">
+            {/* ✅ Hero / Banner */}
+            <section
+                className="hotel-banner text-white d-flex align-items-center"
+                style={{
+                    background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${hotel.image}) center/cover no-repeat`,
+                    height: "55vh",
+                }}
+            >
+                <div className="container text-center">
+                    <h1 className="fw-bold mb-3">{hotel.name}</h1>
+                    <p className="lead mb-0">
+                        📍 {hotel.city}, {hotel.country} {hotel.flag}
+                    </p>
                 </div>
-                <div className="col-md-5">
-                    <h2 className="mb-1">{hotel.name}</h2>
-                    <div className="text-muted mb-2">{hotel.city}, {hotel.country}</div>
-                    <div className="mb-2">
-                        {hotel.tags.map(t => <span key={t} className="badge rounded-pill text-bg-light border me-1">{t}</span>)}
+            </section>
+
+            {/* ✅ Main Content */}
+            <div className="container py-5">
+                <div className="row g-4">
+                    {/* Left Side – Description */}
+                    <div className="col-lg-8">
+                        <h4 className="fw-bold mb-3">About this stay</h4>
+                        <p className="text-muted mb-4">{hotel.description}</p>
+
+                        <h5 className="fw-bold mt-4 mb-3">Amenities</h5>
+                        <div className="row row-cols-2 g-3 text-muted">
+                            <div className="col"><i className="bi bi-wifi me-2 text-primary"></i>Free Wi-Fi</div>
+                            <div className="col"><i className="bi bi-cup-hot me-2 text-primary"></i>Breakfast included</div>
+                            <div className="col"><i className="bi bi-car-front me-2 text-primary"></i>Airport pickup</div>
+                            <div className="col"><i className="bi bi-person-workspace me-2 text-primary"></i>Business center</div>
+                            <div className="col"><i className="bi bi-droplet-half me-2 text-primary"></i>Pool access</div>
+                            <div className="col"><i className="bi bi-door-open me-2 text-primary"></i>24-hour front desk</div>
+                        </div>
+
+                        <Link to="/explore" className="btn btn-outline-secondary mt-4">
+                            ← Back to Explore
+                        </Link>
                     </div>
-                    <p className="mb-3">{hotel.description}</p>
-                    <div className="d-flex align-items-center justify-content-between">
-                        <div><span className="h4 mb-0">${hotel.price}</span> <span className="text-muted">/night</span></div>
-                        <Link className="btn btn-primary" to={`/checkout?hotel=${hotel.id}`}>Reserve</Link>
+
+                    {/* Right Side – Booking Card */}
+                    <div className="col-lg-4">
+                        <div className="card shadow-sm border-0 sticky-top" style={{ top: "90px" }}>
+                            <div className="card-body text-center">
+                                <h4 className="fw-bold mb-3 text-primary">
+                                    ${hotel.price} <small className="text-muted fs-6">/ night</small>
+                                </h4>
+                                <p className="text-muted mb-3">Includes all taxes & fees</p>
+
+                                <div className="mb-3">
+                                    <label className="form-label fw-semibold">Guests</label>
+                                    <select className="form-select text-center">
+                                        <option>1 Guest</option>
+                                        <option>2 Guests</option>
+                                        <option>3 Guests</option>
+                                        <option>4 Guests</option>
+                                    </select>
+                                </div>
+
+                                <button
+                                    onClick={handleCheckout}
+                                    className="btn btn-primary w-100 py-2"
+                                >
+                                    Reserve Now
+                                </button>
+
+                                <p className="text-muted mt-3" style={{ fontSize: "0.9rem" }}>
+                                    Secure payment via Stripe 💳
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
