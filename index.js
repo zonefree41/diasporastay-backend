@@ -6,11 +6,8 @@ import cors from "cors";
 import Booking from "./models/Booking.js";
 import bodyParser from "body-parser";
 
-
 dotenv.config();
 const app = express();
-app.use(cors());
-app.use(express.json());
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // ✅ connect MongoDB
@@ -19,7 +16,6 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.error("MongoDB Error:", err));
 
 // Regular middlewares
-
 const allowedOrigins = [
     "http://localhost:5173",
     "https://diasporastay.vercel.app", // or your deployed frontend
@@ -36,32 +32,42 @@ app.use(express.json());
 app.post(
     "/webhook",
     bodyParser.raw({ type: "application/json" }),
-    (request, response) => {
-        const sig = request.headers["stripe-signature"]
-        let event
+    async (request, response) => {
+        const sig = request.headers["stripe-signature"];
+        let event;
 
         try {
             event = stripe.webhooks.constructEvent(
                 request.body,
                 sig,
                 process.env.STRIPE_WEBHOOK_SECRET
-            )
+            );
         } catch (err) {
-            console.error("⚠️ Webhook signature verification failed:", err.message)
-            return response.status(400).send(`Webhook Error: ${err.message}`)
+            console.error("⚠️ Webhook signature verification failed:", err.message);
+            return response.status(400).send(`Webhook Error: ${err.message}`);
         }
 
         // ✅ Handle successful payments
-        if (event.type === "checkout.session.completed") {
-            const session = event.data.object
-            console.log("✅ Payment Success:", session.id)
-            // TODO: save booking in MongoDB here
+        if (event.type === 'checkout.session.completed') {
+            const session = event.data.object;
+            console.log('✅ Payment Success:', session.id);
+
+            // Save booking
+            await Booking.create({
+                hotelName: session.metadata.hotelName,
+                city: session.metadata.city,
+                country: session.metadata.country,
+                price: session.amount_total / 100,
+                nights: session.metadata.nights,
+                guests: session.metadata.guests,
+                paymentStatus: 'paid',
+                stripeSessionId: session.id
+            });
         }
 
-        response.sendStatus(200)
+        response.json({ received: true });
     }
-)
-
+);
 
 // ✅ Create Checkout Session
 app.post("/api/create-checkout-session", async (req, res) => {
@@ -122,8 +128,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
 
         res.json({ id: session.id, url: session.url });
     } catch (error) {
-        console.error("Stripe error:", error);
-        res.status(500).json({ error: error.message });
+        console.error("Error creating checkout session:", error);
+        res.status(500).json({ error: "Failed to create checkout session" });
     }
 });
 
@@ -134,7 +140,6 @@ app.post(
     async (req, res) => {
         const sig = req.headers["stripe-signature"];
         let event;
-        app.use(express.json());
 
         try {
             event = stripe.webhooks.constructEvent(
@@ -172,11 +177,10 @@ app.get("/api/bookings", async (req, res) => {
         const bookings = await Booking.find({ email }).sort({ createdAt: -1 });
         res.json(bookings);
     } catch (err) {
-        console.error("Fetch bookings error:", err);
-        res.status(500).json({ error: err.message });
+        console.error("Error fetching bookings:", err);
+        res.status(500).json({ error: "Failed to fetch bookings" });
     }
 });
-
 
 app.get("/", (req, res) => res.send("DiasporaStay backend with Stripe Webhooks ✅"));
 

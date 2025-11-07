@@ -1,16 +1,18 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const bookingSchema = new mongoose.Schema({
-    hotelId: String,
     hotelName: String,
     city: String,
     country: String,
-    guests: Number,
+    price: Number,
     nights: Number,
-    total: Number,
-    email: String,
+    guests: Number,
+    paymentStatus: {
+        type: String,
+        default: 'pending'
+    },
     stripeSessionId: String,
-    status: { type: String, default: "pending" },
-}, { timestamps: true });
+    createdAt: { type: Date, default: Date.now }
+})
 
-export default mongoose.model("Booking", bookingSchema);
+export default mongoose.model('Booking', bookingSchema)
