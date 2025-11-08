@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Regular middlewares
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://diasporastay.vercel.app", // or your deployed frontend
+    "https://diasporastay-live.vercel.app", // or your deployed frontend
 ];
 
 app.use(cors({
