@@ -1,0 +1,11 @@
+{
+  "Nigeria": ["Paystack", "Flutterwave"],
+  "Ghana": ["Paystack", "Flutterwave"],
+  "Kenya": ["Flutterwave", "DPO Group"],
+  "South Africa": ["Paystack", "DPO Group"],
+  "Uganda": ["Flutterwave"],
+  "Tanzania": ["DPO Group"],
+  "Ethiopia": ["DPO Group"],
+  "Rwanda": ["Flutterwave"],
+  "Zambia": ["DPO Group"]
+}

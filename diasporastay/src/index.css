@@ -123,3 +123,15 @@ input.form-control:focus {
     font-size: 2rem;
   }
 }
+
+/* Add in src/index.css or App.css */
+select.form-select {
+  border-radius: 30px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+select.form-select:hover {
+  border-color: #0d6efd;
+}
